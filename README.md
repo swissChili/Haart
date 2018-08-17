@@ -4,6 +4,7 @@ Generate ascii art from file hashes.
 Haart uses MD-5 Checksums to generate a unique hash from the file provided as input, and converts that to a nice looking ascii art image. 
 
 Here is the generated ascii art for `haart.js`
+
 ![Haart ascii art](haart.png)
 
 ### Usage
