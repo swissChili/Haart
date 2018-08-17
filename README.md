@@ -11,7 +11,7 @@ Here is the generated ascii art for `haart.js`
 **Flags:**
 - `-i`, `--input`: specify the input file to be hashed
 - `-o`, `--output`: specify the output file (if any) to save the ascii art to
-- `-f`, `--format`: specify the format to create, currently only `ascii` and `html` are avialable. 
+- `-f`, `--format`: specify the format to create, currently `ascii`, `png` and `html` are avialable. Png exporting uses `node-snapshot` and `phantomjs` to create an image from the HTML.
 
 ### Roadmap
 - create option to generate checksums for directories, possibly by creating a tarball, useful for comparing metadata as well as file contents.

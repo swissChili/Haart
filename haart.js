@@ -2,6 +2,7 @@ const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
 const ArgumentParser = require('argparse').ArgumentParser
+const webshot = require('webshot')
 
 var parser = new ArgumentParser({
 	version: "0.0.0",
@@ -38,15 +39,15 @@ if ( args.input != null )
 {
 	let filePath = path.join(__dirname, args.input)
 	
-	if ( args.format == "html" )
+	if ( args.format == "html" || args.format == 'png' )
 	{
 		var end = "</b>"
 		var red = '<b class="red">'
 		var green = '<b class="green">'
 		var blue = '<b class="blue">'
 		var background = '<b class="background">'
-		var prefix = '<pre><code>'
-		var suffix = "</code></pre> <style> .red{color:#ce5c68;}.blue{color:#5cacce;}.green{color:5cce75;}.background{background:#e6cc38;color:#fff;} </style>"
+		var prefix = '<pre class="haart"><code>'
+		var suffix = "</code></pre> <style> .red{color:#ce5c68;}.blue{color:#5cacce;}.green{color:5cce75;}.background{background:#e6cc38;color:#fff;}.haart{background-color:#fff;width: min-content; transform: scale(10);}</style>"
 	} else {
 		var end = "\x1b[0m"
 		var red = "\x1b[31m"
@@ -105,10 +106,31 @@ ${background}               ${end}${suffix}`
 
 			if ( args.output != null )
 			{
-				fs.writeFile(args.output, template, (err) => {
-					if ( err ) throw err
-					console.log(green + "Haart has been saved to " + args.output + end)
-				})
+				if ( args.format == 'png' )
+				{
+					let options = {
+						screenSize: {
+							width: 600,
+							height: 600
+						},
+						shotSize: {
+							width: 'all',
+							height: 'all',
+						}, 
+						siteType: 'html',
+						defaultWhiteBackground: true,
+						customCSS: '.haart{font-size: 5em;}'
+					}
+					webshot(template, args.output, options, err => {
+						console.log(err)
+					})
+				} else 
+				{
+					fs.writeFile(args.output, template, (err) => {
+						if ( err ) throw err
+						console.log(green + "Haart has been saved to " + args.output + end)
+					})
+				}
 			}
 		} else {
 			console.log("No such file! Please specify a valid file path.")
