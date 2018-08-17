@@ -1,0 +1,15 @@
+{
+  "name": "haart",
+  "version": "0.0.0",
+  "description": "Pretty-printing for checksums",
+  "main": "haart.js",
+  "scripts": {
+    "test": "node haart.js"
+  },
+  "author": "swissChili",
+  "license": "ISC",
+  "keywords": [
+    "checksum",
+    "hash"
+  ]
+}
