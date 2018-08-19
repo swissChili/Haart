@@ -6,9 +6,9 @@ const webshot = require('webshot')
 
 // add all required arguments
 var parser = new ArgumentParser({
-	version: "0.0.0",
+	version: "0.1.0",
 	addHelp: true,
-	description: "Haart: pretty-printing for checksums inspired by ssh-keygen randomart"
+	description: "Haart: ascii art for checksums inspired by ssh-keygen randomart"
 })
 
 parser.addArgument(

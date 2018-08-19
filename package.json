@@ -1,7 +1,7 @@
 {
   "name": "haart",
-  "version": "0.0.0",
-  "description": "Pretty-printing for checksums",
+  "version": "0.1.0",
+  "description": "Ascii art for checksums",
   "main": "haart.js",
   "scripts": {
     "test": "node haart.js"
