@@ -4,10 +4,11 @@ const path = require('path')
 const ArgumentParser = require('argparse').ArgumentParser
 const webshot = require('webshot')
 
+// add all required arguments
 var parser = new ArgumentParser({
 	version: "0.0.0",
 	addHelp: true,
-	description: "Haart: pretty-printing for checksums inspired by RSA-keygen randomart"
+	description: "Haart: pretty-printing for checksums inspired by ssh-keygen randomart"
 })
 
 parser.addArgument(
@@ -27,7 +28,7 @@ parser.addArgument(
 parser.addArgument(
 	['-f', '--format'],
 	{
-		help: 'Format of output file. Options: html, sh, ascii. Default: ascii'
+		help: 'Format of output file. Options: html, img, ascii. Default: ascii'
 	}
 )
 
@@ -38,8 +39,8 @@ console.log("Haart: Pretty-printing for checksums")
 if ( args.input != null )
 {
 	let filePath = path.join(__dirname, args.input)
-	
-	if ( args.format == "html" || args.format == 'png' )
+	// creates two different sets of values for different output formats
+	if ( args.format == "html" || args.format == 'img' )
 	{
 		var end = "</b>"
 		var red = '<b class="red">'
@@ -57,15 +58,18 @@ if ( args.input != null )
 		var prefix = ""
 		var suffix = ""
 	}
-
+	// reads the input file
     fs.readFile(filePath, {encoding: 'utf-8'}, ( err, data ) => {
 		if ( !err ) {
+			// hashes the file
 			var hash = crypto.createHash("md5")
 			hash.setEncoding('hex')
 			hash.write(data)
 			hash.end()
 			let result = hash.read()
 
+			// sets the values to replace the hexs with
+			// colors are defined at ln44-58
 			let replaceHash = {
 				"a": `-`,
 				"b": `|`,
@@ -92,26 +96,26 @@ if ( args.input != null )
 				hs.push(replaceHash[result[item]])
 			}
 			// ugly indentation required because this is a raw string
-			let template = `
-${prefix}
-${background}               ${end}
-${background} ${end} ${hs[0]} ${hs[1]} ${hs[2]} ${hs[3]} ${hs[4]} ${hs[5]} ${background} ${end}
-${background} ${end} ${hs[6]} ${hs[7]} ${hs[8]} ${hs[9]} ${hs[10]} ${hs[11]} ${background} ${end}
-${background} ${end} ${hs[12]} ${hs[13]}${background} ha  ${end}${hs[14]} ${hs[15]} ${background} ${end}
-${background} ${end} ${hs[16]} ${hs[17]}${background} art ${end}${hs[18]} ${hs[19]} ${background} ${end}
-${background} ${end} ${hs[20]} ${hs[21]} ${hs[22]} ${hs[23]} ${hs[24]} ${hs[25]} ${background} ${end}
-${background} ${end} ${hs[26]} ${hs[27]} ${hs[28]} ${hs[29]} ${hs[30]} ${hs[31]} ${background} ${end}
-${background}               ${end}${suffix}`
+			// this template is dynamically filled with the format specific values
+			let template = `${prefix}${background}                 ${end}
+${background}  ${end} ${hs[0]} ${hs[1]} ${hs[2]} ${hs[3]} ${hs[4]} ${hs[5]} ${background}  ${end}
+${background}  ${end} ${hs[6]} ${hs[7]} ${hs[8]} ${hs[9]} ${hs[10]} ${hs[11]} ${background}  ${end}
+${background}  ${end} ${hs[12]} ${hs[13]}${background} ha  ${end}${hs[14]} ${hs[15]} ${background}  ${end}
+${background}  ${end} ${hs[16]} ${hs[17]}${background} art ${end}${hs[18]} ${hs[19]} ${background}  ${end}
+${background}  ${end} ${hs[20]} ${hs[21]} ${hs[22]} ${hs[23]} ${hs[24]} ${hs[25]} ${background}  ${end}
+${background}  ${end} ${hs[26]} ${hs[27]} ${hs[28]} ${hs[29]} ${hs[30]} ${hs[31]} ${background}  ${end}
+${background}                 ${end}${suffix}`
 			console.log(template)
 
 			if ( args.output != null )
 			{
-				if ( args.format == 'png' )
+				if ( args.format == 'img' )
 				{
+					// creates an image and saves it
 					let options = {
 						screenSize: {
-							width: 600,
-							height: 600
+							width: 680,
+							height: 700
 						},
 						shotSize: {
 							width: 'all',
@@ -119,6 +123,7 @@ ${background}               ${end}${suffix}`
 						}, 
 						siteType: 'html',
 						defaultWhiteBackground: true,
+						// makes everything bigger, default size too small for image
 						customCSS: '.haart{font-size: 5em;}'
 					}
 					webshot(template, args.output, options, err => {
